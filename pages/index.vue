@@ -9,7 +9,6 @@
 
 <script>
 import PostList from "@/components/Posts/PostList";
-import { reject } from "q";
 
 export default {
   components: {
