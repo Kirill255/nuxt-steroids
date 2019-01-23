@@ -19,7 +19,7 @@ export default {
     onSubmitted(postData) {
       const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
       axios
-        .post(baseUrl + "posts.json", postData) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
+        .post(baseUrl + "posts.json", { ...postData, updatedDate: new Date() }) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
         .then(res => {
           console.log(res);
         })
