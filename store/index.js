@@ -42,7 +42,7 @@ export const getters = {
 
 export const mutations = {
   setPosts(state, posts) {
-    state.posts = posts;
+    state.loadedPosts = posts;
   }
 };
 
