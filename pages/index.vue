@@ -39,43 +39,48 @@ export default {
   //     });
   //   }, 1500);
   // },
-  asyncData(context) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          loadedPosts: [
-            {
-              id: "1",
-              title: "First Post",
-              previewText: "This is our first post!",
-              thumbnail:
-                "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
-            },
-            {
-              id: "2",
-              title: "Second Post",
-              previewText: "This is our second post!",
-              thumbnail:
-                "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
-            }
-          ]
-        });
-      }, 1500);
-      // reject(new Error());
-    })
-      .then(data => {
-        return data;
-      })
-      .catch(err => {
-        context.error(err);
-      });
-  }
+  // asyncData(context) {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       resolve({
+  //         loadedPosts: [
+  //           {
+  //             id: "1",
+  //             title: "First Post",
+  //             previewText: "This is our first post!",
+  //             thumbnail:
+  //               "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
+  //           },
+  //           {
+  //             id: "2",
+  //             title: "Second Post",
+  //             previewText: "This is our second post!",
+  //             thumbnail:
+  //               "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
+  //           }
+  //         ]
+  //       });
+  //     }, 1500);
+  //     // reject(new Error());
+  //   })
+  //     .then(data => {
+  //       return data;
+  //     })
+  //     .catch(err => {
+  //       context.error(err);
+  //     });
+  // }
   // важно! data перезапишет всё-что вернулось из asyncData, потому-что будет вызываться уже после, на клиенте, тоесть в нашем случае loadedPosts будет равен пустому массиву
   // data() {
   //   return {
   //     loadedPosts: []
   //   };
   // },
+  computed: {
+    loadedPosts() {
+      return this.$store.getters.loadedPosts;
+    }
+  }
 };
 </script>
 
