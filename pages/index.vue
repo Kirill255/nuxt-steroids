@@ -17,6 +17,7 @@ export default {
   },
   // работает только в pages и выполняется только на сервере, внутри нет this(vm), например (this.loadedPosts) т.к. компонент ещё не создан, asyncData должна возращать promise или вызвать callback по окончанию
   // WARN!!!  Callback-based asyncData, fetch or middleware calls are deprecated. Please switch to promises or async/await syntax
+  // с Callback-методом ошибка передаётся первым аргументом callback(new Error(), null)
   // asyncData(context, callback) {
   //   setTimeout(() => {
   //     callback(null, {
@@ -39,7 +40,7 @@ export default {
   //     });
   //   }, 1500);
   // },
-  asyncData() {
+  asyncData(context) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve({
@@ -61,7 +62,14 @@ export default {
           ]
         });
       }, 1500);
-    });
+      // reject(new Error());
+    })
+      .then(data => {
+        return data;
+      })
+      .catch(err => {
+        context.error(err);
+      });
   }
   // важно! data перезапишет всё-что вернулось из asyncData, потому-что будет вызываться уже после, на клиенте, тоесть в нашем случае loadedPosts будет равен пустому массиву
   // data() {
