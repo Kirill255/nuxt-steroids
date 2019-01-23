@@ -9,36 +9,66 @@
 
 <script>
 import PostList from "@/components/Posts/PostList";
+import { reject } from "q";
 
 export default {
   components: {
     PostList
   },
-  data() {
-    return {
-      loadedPosts: []
-    };
-  },
-  created() {
-    setTimeout(() => {
-      this.loadedPosts = [
-        {
-          id: "1",
-          title: "First Post",
-          previewText: "This is our first post!",
-          thumbnail:
-            "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
-        },
-        {
-          id: "2",
-          title: "Second Post",
-          previewText: "This is our second post!",
-          thumbnail:
-            "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
-        }
-      ];
-    }, 1500);
+  // работает только в pages и выполняется только на сервере, внутри нет this(vm), например (this.loadedPosts) т.к. компонент ещё не создан, asyncData должна возращать promise или вызвать callback по окончанию
+  // WARN!!!  Callback-based asyncData, fetch or middleware calls are deprecated. Please switch to promises or async/await syntax
+  // asyncData(context, callback) {
+  //   setTimeout(() => {
+  //     callback(null, {
+  //       loadedPosts: [
+  //         {
+  //           id: "1",
+  //           title: "First Post",
+  //           previewText: "This is our first post!",
+  //           thumbnail:
+  //             "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
+  //         },
+  //         {
+  //           id: "2",
+  //           title: "Second Post",
+  //           previewText: "This is our second post!",
+  //           thumbnail:
+  //             "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
+  //         }
+  //       ]
+  //     });
+  //   }, 1500);
+  // },
+  asyncData() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({
+          loadedPosts: [
+            {
+              id: "1",
+              title: "First Post",
+              previewText: "This is our first post!",
+              thumbnail:
+                "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
+            },
+            {
+              id: "2",
+              title: "Second Post",
+              previewText: "This is our second post!",
+              thumbnail:
+                "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
+            }
+          ]
+        });
+      }, 1500);
+    });
   }
+  // важно! data перезапишет всё-что вернулось из asyncData, потому-что будет вызываться уже после, на клиенте, тоесть в нашем случае loadedPosts будет равен пустому массиву
+  // data() {
+  //   return {
+  //     loadedPosts: []
+  //   };
+  // },
 };
 </script>
 
