@@ -15,25 +15,21 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   asyncData(context) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          loadedPost: {
-            id: "1",
-            title: "First Post (ID: " + context.route.params.id + ")", // или context.params.id
-            previewText: "This is our first post!",
-            author: "Maximilian",
-            updatedDate: new Date(),
-            content:
-              "Some dummy text which is definitely not the preview text though!",
-            thumbnail:
-              "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
-          }
-        });
-      }, 1500);
-    });
+    const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
+    return axios
+      .get(baseUrl + "posts/" + context.params.id + ".json") // https://nuxt-blog-d5ca1.firebaseio.com/posts/${id}.json
+      .then(res => {
+        return {
+          loadedPost: res.data
+        };
+      })
+      .catch(err => {
+        context.error(err);
+      });
   }
 };
 </script>
