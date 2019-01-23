@@ -16,7 +16,12 @@ export default {
   },
   data() {
     return {
-      loadedPosts: [
+      loadedPosts: []
+    };
+  },
+  created() {
+    setTimeout(() => {
+      this.loadedPosts = [
         {
           id: "1",
           title: "First Post",
@@ -31,8 +36,8 @@ export default {
           thumbnail:
             "https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg"
         }
-      ]
-    };
+      ];
+    }, 1500);
   }
 };
 </script>
