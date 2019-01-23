@@ -24,26 +24,16 @@ export default {
       .get(baseUrl + "posts/" + context.params.postId + ".json")
       .then(res => {
         return {
-          loadedPost: res.data
+          loadedPost: { ...res.data, id: context.params.postId }
         };
       })
       .catch(e => context.error());
   },
   methods: {
     onSubmitted(postData) {
-      const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
-      axios
-        .put(baseUrl + "posts/" + this.$route.params.postId + ".json", {
-          ...postData,
-          updatedDate: new Date()
-        }) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
-        .then(res => {
-          // console.log(res);
-          this.$router.push("/admin");
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.$store.dispatch("editPost", postData).then(() => {
+        this.$router.push("/admin");
+      });
     }
   }
 };

@@ -45,6 +45,13 @@ export const getters = {
 export const mutations = {
   setPosts(state, posts) {
     state.loadedPosts = posts;
+  },
+  addPost(state, post) {
+    state.loadedPosts.push(post);
+  },
+  editPost(state, post) {
+    const postIndex = state.loadedPosts.findIndex(p => p.id === post.id);
+    state.loadedPosts[postIndex] = post;
   }
 };
 
@@ -70,5 +77,31 @@ export const actions = {
   },
   setPosts(context, posts) {
     context.commit("setPosts", posts);
+  },
+  addPost(context, post) {
+    const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
+    const createdPost = { ...post, updatedDate: new Date() };
+    return axios
+      .post(baseUrl + "posts.json", createdPost) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
+      .then(res => {
+        context.commit("addPost", { ...createdPost, id: res.data.name });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  editPost(context, post) {
+    const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
+    return axios
+      .put(baseUrl + "posts/" + post.id + ".json", {
+        ...post,
+        updatedDate: new Date()
+      }) // https://nuxt-blog-d5ca1.firebaseio.com/posts/${id}.json
+      .then(res => {
+        context.commit("editPost", post);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };

@@ -17,16 +17,9 @@ export default {
   },
   methods: {
     onSubmitted(postData) {
-      const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
-      axios
-        .post(baseUrl + "posts.json", { ...postData, updatedDate: new Date() }) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
-        .then(res => {
-          console.log(res);
-          this.$router.push("/admin");
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.$store.dispatch("addPost", postData).then(() => {
+        this.$router.push("/admin");
+      });
     }
   }
 };
