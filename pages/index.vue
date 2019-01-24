@@ -8,12 +8,13 @@
 </template>
 
 <script>
-import PostList from "@/components/Posts/PostList";
+// подключили глобально
+// import PostList from "@/components/Posts/PostList";
 
 export default {
-  components: {
-    PostList
-  },
+  // components: {
+  //   PostList
+  // },
   // работает только в pages и выполняется только на сервере, внутри нет this(vm), например (this.loadedPosts) т.к. компонент ещё не создан, asyncData должна возращать promise или вызвать callback по окончанию
   // WARN!!!  Callback-based asyncData, fetch or middleware calls are deprecated. Please switch to promises or async/await syntax
   // с Callback-методом ошибка передаётся первым аргументом callback(new Error(), null)

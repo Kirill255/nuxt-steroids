@@ -14,15 +14,16 @@
 </template>
 
 <script>
-import PostList from "@/components/Posts/PostList";
-import AppButton from "@/components/UI/AppButton";
+// подключили глобально
+// import PostList from "@/components/Posts/PostList";
+// import AppButton from "@/components/UI/AppButton";
 
 export default {
   layout: "admin",
-  components: {
-    PostList,
-    AppButton
-  },
+  // components: {
+  //   PostList,
+  //   AppButton
+  // },
   computed: {
     loadedPosts() {
       return this.$store.getters.loadedPosts;

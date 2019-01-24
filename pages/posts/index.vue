@@ -5,12 +5,13 @@
 </template>
 
 <script>
-import PostList from "@/components/Posts/PostList";
+// подключили глобально
+// import PostList from "@/components/Posts/PostList";
 
 export default {
-  components: {
-    PostList
-  },
+  // components: {
+  //   PostList
+  // },
   // asyncData(context) {
   //   return new Promise((resolve, reject) => {
   //     setTimeout(() => {
