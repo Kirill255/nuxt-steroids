@@ -86,11 +86,13 @@ export const actions = {
   setPosts(context, posts) {
     context.commit("setPosts", posts);
   },
+  // https://firebase.google.com/docs/database/rest/auth#authenticate_with_an_id_token
+  // "https://какой-то_запрос?auth=<ID_TOKEN>"
   addPost(context, post) {
     // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
     const createdPost = { ...post, updatedDate: new Date() };
     return this.$axios
-      .$post("posts.json", createdPost) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
+      .$post("posts.json?auth=" + context.state.token, createdPost) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
       .then(data => {
         context.commit("addPost", { ...createdPost, id: data.name });
       })
@@ -101,7 +103,7 @@ export const actions = {
   editPost(context, post) {
     // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
     return this.$axios
-      .$put("posts/" + post.id + ".json", {
+      .$put("posts/" + post.id + ".json?auth=" + context.state.token, {
         ...post,
         updatedDate: new Date()
       }) // https://nuxt-blog-d5ca1.firebaseio.com/posts/${id}.json
