@@ -12,6 +12,9 @@ import AdminPostForm from "@/components/Admin/AdminPostForm";
 
 export default {
   layout: "admin",
+  // middleware: "auth",
+  // если нужно применить несколько middleware то можно использовать массив строк middleware: ["auth", "log"]
+  middleware: ["auth"],
   components: {
     AdminPostForm
   },

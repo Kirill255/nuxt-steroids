@@ -41,6 +41,7 @@
 export default {
   name: "AdminAuthPage",
   layout: "admin",
+  // тут не не нужна middleware: "auth", поэтому мы не могли разом установить middleware, в admin layout, пришлось ставить в каждом нужном роуте отдельно
   // components: {
   //   AppControlInput,
   //   AppButton
