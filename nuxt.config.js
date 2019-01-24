@@ -60,6 +60,7 @@ module.exports = {
   */
   env: {
     // baseUrl: process.env.BASE_URL || "https://nuxt-blog-d5ca1.firebaseio.com/"
+    fbAPIKey: "AIzaSyDSfEiNFh_pKFAlTXGFQr8GgPX8c6Ggg_g"
   },
 
   /*
