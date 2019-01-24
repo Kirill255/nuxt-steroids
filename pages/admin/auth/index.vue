@@ -36,6 +36,7 @@
 // https://firebase.google.com/docs/reference/rest/auth/
 // https://firebase.google.com/docs/reference/rest/auth/#section-create-email-password
 // https://firebase.google.com/docs/reference/rest/auth/#section-sign-in-email-password
+// установить правило в fb database rules ".write": "auth != null"
 
 export default {
   name: "AdminAuthPage",
@@ -53,29 +54,14 @@ export default {
   },
   methods: {
     onSubmit() {
-      // войти verifyPassword https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=[API_KEY]
-      let apiUrl =
-        "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=" +
-        process.env.fbAPIKey;
-
-      if (!this.isLogin) {
-        // создать signupNewUser https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=[API_KEY]
-        apiUrl =
-          "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" +
-          process.env.fbAPIKey;
-      }
-
-      this.$axios
-        .$post(apiUrl, {
+      this.$store
+        .dispatch("authenticateUser", {
+          isLogin: this.isLogin,
           email: this.email,
-          password: this.password,
-          returnSecureToken: true
+          password: this.password
         })
-        .then(data => {
-          console.log(data);
-        })
-        .catch(err => {
-          console.log(err);
+        .then(() => {
+          this.$router.push("/admin");
         });
     }
   }

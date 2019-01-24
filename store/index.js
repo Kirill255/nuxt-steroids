@@ -33,12 +33,16 @@
 // import axios from "axios";
 
 export const state = () => ({
-  loadedPosts: []
+  loadedPosts: [],
+  token: null
 });
 
 export const getters = {
   loadedPosts(state) {
     return state.loadedPosts;
+  },
+  isAuthenticated(state) {
+    return state.token != null;
   }
 };
 
@@ -52,6 +56,9 @@ export const mutations = {
   editPost(state, post) {
     const postIndex = state.loadedPosts.findIndex(p => p.id === post.id);
     state.loadedPosts[postIndex] = post;
+  },
+  setToken(state, token) {
+    state.token = token;
   }
 };
 
@@ -100,6 +107,33 @@ export const actions = {
       }) // https://nuxt-blog-d5ca1.firebaseio.com/posts/${id}.json
       .then(data => {
         context.commit("editPost", post);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  authenticateUser(context, authData) {
+    // войти verifyPassword https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=[API_KEY]
+    let apiUrl =
+      "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=" +
+      process.env.fbAPIKey;
+
+    if (!authData.isLogin) {
+      // создать signupNewUser https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=[API_KEY]
+      apiUrl =
+        "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" +
+        process.env.fbAPIKey;
+    }
+
+    return this.$axios
+      .$post(apiUrl, {
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
+      })
+      .then(data => {
+        // console.log(data);
+        context.commit("setToken", data.idToken);
       })
       .catch(err => {
         console.log(err);
