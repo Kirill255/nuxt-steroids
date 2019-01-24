@@ -84,6 +84,8 @@ export default {
   //       context.error(err);
   //     });
   // },
+  // middleware запускается только для этого конкретного роута
+  // middleware: "log", // название нашей middleware log.js
   computed: {
     loadedPosts() {
       return this.$store.getters.loadedPosts;

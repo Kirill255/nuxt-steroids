@@ -71,6 +71,14 @@ module.exports = {
   },
 
   /*
+  ** https://nuxtjs.org/api/configuration-router
+  */
+  router: {
+    // middleware запускается вообще для всех роутов
+    // middleware: "log", // название нашей middleware log.js
+  },
+
+  /*
   ** Build configuration
   */
   build: {

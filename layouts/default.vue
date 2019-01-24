@@ -14,6 +14,8 @@ import TheHeader from "@/components/Navigation/TheHeader";
 import TheSidenav from "@/components/Navigation/TheSidenav";
 
 export default {
+  // middleware запускается для всех роутов которые рендерятся в контексте default layout'а
+  // middleware: "log", // название нашей middleware log.js
   components: {
     TheHeader,
     TheSidenav
