@@ -51,6 +51,13 @@ module.exports = {
   modules: [],
 
   /*
+  ** Global variables
+  */
+  env: {
+    baseUrl: process.env.BASE_URL || "https://nuxt-blog-d5ca1.firebaseio.com/"
+  },
+
+  /*
   ** Build configuration
   */
   build: {

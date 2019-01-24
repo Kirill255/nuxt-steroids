@@ -59,9 +59,9 @@ export const actions = {
   // https://nuxtjs.org/guide/vuex-store#the-nuxtserverinit-action
   // первый context это nuxt context в котором state, commit и т.д., а второй context это context приложения в котором app, store, params и т.д., чтобы не путать можно использовать деструктуризацию nuxtServerInit ({ state, commit }, { req, app, store }) {}
   nuxtServerInit(nuxtContext, context) {
-    const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
+    // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
     return axios
-      .get(baseUrl + "posts.json") // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
+      .get(process.env.baseUrl + "posts.json") // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
       .then(res => {
         // у нас данные хранятся в сторе как массив, а из firebase нам приходит объект, поэтому нужно сконвертировать данные в массив, а также добавим к каждому посту id
         const postsArray = [];
@@ -79,10 +79,10 @@ export const actions = {
     context.commit("setPosts", posts);
   },
   addPost(context, post) {
-    const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
+    // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
     const createdPost = { ...post, updatedDate: new Date() };
     return axios
-      .post(baseUrl + "posts.json", createdPost) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
+      .post(process.env.baseUrl + "posts.json", createdPost) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
       .then(res => {
         context.commit("addPost", { ...createdPost, id: res.data.name });
       })
@@ -91,9 +91,9 @@ export const actions = {
       });
   },
   editPost(context, post) {
-    const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
+    // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
     return axios
-      .put(baseUrl + "posts/" + post.id + ".json", {
+      .put(process.env.baseUrl + "posts/" + post.id + ".json", {
         ...post,
         updatedDate: new Date()
       }) // https://nuxt-blog-d5ca1.firebaseio.com/posts/${id}.json
