@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import AdminPostForm from "@/components/Admin/AdminPostForm";
 
 export default {
@@ -20,11 +20,12 @@ export default {
   },
   asyncData(context) {
     // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
-    return axios
-      .get(process.env.baseUrl + "posts/" + context.params.postId + ".json")
-      .then(res => {
+    // https://axios.nuxtjs.org/helpers#fetch-style-requests
+    return context.app.$axios
+      .$get("posts/" + context.params.postId + ".json")
+      .then(data => {
         return {
-          loadedPost: { ...res.data, id: context.params.postId }
+          loadedPost: { ...data, id: context.params.postId }
         };
       })
       .catch(e => context.error());

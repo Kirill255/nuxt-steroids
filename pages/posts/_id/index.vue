@@ -15,16 +15,17 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 
 export default {
   asyncData(context) {
     // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
-    return axios
-      .get(process.env.baseUrl + "posts/" + context.params.id + ".json") // https://nuxt-blog-d5ca1.firebaseio.com/posts/${id}.json
-      .then(res => {
+    // https://axios.nuxtjs.org/helpers#fetch-style-requests
+    return context.app.$axios
+      .$get("posts/" + context.params.id + ".json") // https://nuxt-blog-d5ca1.firebaseio.com/posts/${id}.json
+      .then(data => {
         return {
-          loadedPost: res.data
+          loadedPost: data
         };
       })
       .catch(err => {

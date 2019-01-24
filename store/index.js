@@ -30,7 +30,7 @@
 
 // https://nuxtjs.org/guide/vuex-store#modules-mode
 
-import axios from "axios";
+// import axios from "axios";
 
 export const state = () => ({
   loadedPosts: []
@@ -60,13 +60,14 @@ export const actions = {
   // первый context это nuxt context в котором state, commit и т.д., а второй context это context приложения в котором app, store, params и т.д., чтобы не путать можно использовать деструктуризацию nuxtServerInit ({ state, commit }, { req, app, store }) {}
   nuxtServerInit(nuxtContext, context) {
     // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
-    return axios
-      .get(process.env.baseUrl + "posts.json") // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
-      .then(res => {
+    return context.app.$axios
+      .$get("posts.json") // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
+      .then(data => {
         // у нас данные хранятся в сторе как массив, а из firebase нам приходит объект, поэтому нужно сконвертировать данные в массив, а также добавим к каждому посту id
+        // upd1: axios module сразу возвращает data (диструктурирует response) https://axios.nuxtjs.org/helpers#fetch-style-requests, поэтому мы обращаемся сразу к data, а не к res.data
         const postsArray = [];
-        for (const key in res.data) {
-          postsArray.push({ ...res.data[key], id: key });
+        for (const key in data) {
+          postsArray.push({ ...data[key], id: key });
         }
         nuxtContext.commit("setPosts", postsArray);
       })
@@ -81,10 +82,10 @@ export const actions = {
   addPost(context, post) {
     // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
     const createdPost = { ...post, updatedDate: new Date() };
-    return axios
-      .post(process.env.baseUrl + "posts.json", createdPost) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
-      .then(res => {
-        context.commit("addPost", { ...createdPost, id: res.data.name });
+    return this.$axios
+      .$post("posts.json", createdPost) // https://nuxt-blog-d5ca1.firebaseio.com/posts.json
+      .then(data => {
+        context.commit("addPost", { ...createdPost, id: data.name });
       })
       .catch(err => {
         console.log(err);
@@ -92,12 +93,12 @@ export const actions = {
   },
   editPost(context, post) {
     // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
-    return axios
-      .put(process.env.baseUrl + "posts/" + post.id + ".json", {
+    return this.$axios
+      .$put("posts/" + post.id + ".json", {
         ...post,
         updatedDate: new Date()
       }) // https://nuxt-blog-d5ca1.firebaseio.com/posts/${id}.json
-      .then(res => {
+      .then(data => {
         context.commit("editPost", post);
       })
       .catch(err => {

@@ -48,13 +48,18 @@ module.exports = {
   /*
   ** Nuxt.js modules
   */
-  modules: [],
+  modules: ["@nuxtjs/axios"],
+  // You can pass options for axios module https://axios.nuxtjs.org/options
+  axios: {
+    baseURL: process.env.BASE_URL || "https://nuxt-blog-d5ca1.firebaseio.com/"
+    // credentials: false // now disabled by default
+  },
 
   /*
   ** Global variables
   */
   env: {
-    baseUrl: process.env.BASE_URL || "https://nuxt-blog-d5ca1.firebaseio.com/"
+    // baseUrl: process.env.BASE_URL || "https://nuxt-blog-d5ca1.firebaseio.com/"
   },
 
   /*
