@@ -22,7 +22,18 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: "#fff" },
+  loading: { color: "#fff", height: "4px", duration: 5000 },
+  //  loading: false, // Disable the Progress Bar
+
+  /*
+  ** if mode: "spa", https://nuxtjs.org/api/configuration-loading-indicator
+  */
+  // loadingIndicator: {
+  //   name: "circle",
+  //   color: "#3B8070",
+  //   background: "white"
+  // },
+  // loadingIndicator: false, // Disable
 
   /*
   ** Global CSS
