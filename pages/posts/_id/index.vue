@@ -30,6 +30,10 @@ export default {
       .catch(err => {
         context.error(err);
       });
+  },
+  // установка head в компоненте(pages) приоритетнее настроек из конфига, тоесть на этой странице title будет "A blog post", а не тот что указан в nuxt.config.js
+  head: {
+    title: "A blog post"
   }
 };
 </script>
