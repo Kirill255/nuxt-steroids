@@ -58,6 +58,14 @@ module.exports = {
   },
 
   /*
+  ** https://nuxtjs.org/api/configuration-transition
+  */
+  transition: {
+    name: "fade",
+    mode: "out-in"
+  },
+
+  /*
   ** Build configuration
   */
   build: {
