@@ -31,6 +31,7 @@
 // https://nuxtjs.org/guide/vuex-store#modules-mode
 
 // import axios from "axios";
+import Cookie from "js-cookie";
 
 export const state = () => ({
   loadedPosts: [],
@@ -59,6 +60,9 @@ export const mutations = {
   },
   setToken(state, token) {
     state.token = token;
+  },
+  clearToken(state) {
+    state.token = null;
   }
 };
 
@@ -136,9 +140,61 @@ export const actions = {
       .then(data => {
         // console.log(data);
         context.commit("setToken", data.idToken);
+
+        localStorage.setItem("token", data.idToken);
+        localStorage.setItem(
+          "tokenExpiration",
+          new Date().getTime() + Number.parseInt(data.expiresIn) * 1000
+        );
+
+        Cookie.set("jwt", data.idToken);
+        Cookie.set("expirationDate", new Date().getTime() + Number.parseInt(data.expiresIn) * 1000);
       })
       .catch(err => {
         console.log(err);
       });
+  },
+  initAuth(context, req) {
+    let token;
+    let expirationDate;
+    if (req) {
+      if (!req.headers.cookie) {
+        return;
+      }
+
+      const jwtCookie = req.headers.cookie.split(";").find(c => c.trim().startsWith("jwt="));
+      if (!jwtCookie) {
+        return;
+      }
+
+      token = jwtCookie.split("=")[1];
+      expirationDate = req.headers.cookie
+        .split(";")
+        .find(c => c.trim().startsWith("expirationDate="))
+        .split("=")[1];
+    } else {
+      token = localStorage.getItem("token");
+      expirationDate = localStorage.getItem("tokenExpiration");
+    }
+
+    if (new Date().getTime() > +expirationDate || !token) {
+      console.log("No token or invalid token");
+
+      context.dispatch("logout");
+      return;
+    }
+
+    context.commit("setToken", token);
+  },
+  logout(context) {
+    context.commit("clearToken");
+
+    Cookie.remove("jwt");
+    Cookie.remove("expirationDate");
+
+    if (process.client) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("tokenExpiration");
+    }
   }
 };
