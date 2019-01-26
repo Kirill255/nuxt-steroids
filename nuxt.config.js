@@ -1,4 +1,6 @@
 // const pkg = require("./package");
+// const bodyParser = require("body-parser"); // теперь снова часть express
+const express = require("express");
 
 module.exports = {
   mode: "universal",
@@ -78,6 +80,13 @@ module.exports = {
     // middleware запускается вообще для всех роутов
     // middleware: "log", // название нашей middleware log.js
   },
+
+  /*
+  ** https://nuxtjs.org/api/configuration-servermiddleware
+  // код внутри будет выполняться сверху вниз, по очерёдно, сначала express.json(), затем код по пути "~/api", а именно "~/api/index.js", и т.д., грубо говоря это middlewares которые выполнятются на стороне сервера, в порядке их написания, по express-принципу, что мы имеем, мы получаем входящий запрос, он всегда неизменный, serverMiddleware получает входящий запрос, он парсится express.json() (body-parser), дальше передаётся в "~/api/index.js"
+  */
+  // serverMiddleware: [bodyParser.json(), "~/api"], // bodyParser теперь снова часть express
+  serverMiddleware: [express.json(), "~/api"],
 
   /*
   ** Build configuration
