@@ -176,9 +176,14 @@ export const actions = {
         .split(";")
         .find(c => c.trim().startsWith("expirationDate="))
         .split("=")[1];
-    } else {
+    } else if (process.client) {
+      // добавили проверку  if (process.client) {}, так как при генерации статики у нас нет localStorage на сервере, вернее у нас даже сервера нету
       token = localStorage.getItem("token");
       expirationDate = localStorage.getItem("tokenExpiration");
+    } else {
+      // token = null;
+      // expirationDate = null;
+      // или можно не назначать null, просто останется undefined, т.к. изначальные значения у нас undefined let token; let expirationDate;, если при объявлении задали бы значения null let token = null;, то тогда сдесь тоже можно/нужно было бы устаноить token = null;
     }
 
     if (new Date().getTime() > +expirationDate || !token) {

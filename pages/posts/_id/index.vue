@@ -19,6 +19,14 @@
 
 export default {
   asyncData(context) {
+    // for static generate
+    if (context.payload) {
+      return {
+        loadedPost: context.payload.postData
+      };
+    }
+    // код ниже не будет выполнен, если мы используем static generate, loadedPost мы берём при генерации страниц в nuxt.config.js, мы пробрасываем postData в качестве payload
+
     // const baseUrl = "https://nuxt-blog-d5ca1.firebaseio.com/";
     // https://axios.nuxtjs.org/helpers#fetch-style-requests
     return context.app.$axios

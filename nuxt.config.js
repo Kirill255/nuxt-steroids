@@ -1,6 +1,7 @@
 // const pkg = require("./package");
 // const bodyParser = require("body-parser"); // теперь снова часть express
 const express = require("express");
+const axios = require("axios");
 
 module.exports = {
   mode: "universal",
@@ -87,6 +88,42 @@ module.exports = {
   */
   // serverMiddleware: [bodyParser.json(), "~/api"], // bodyParser теперь снова часть express
   serverMiddleware: [express.json(), "~/api"],
+
+  /*
+  ** https://nuxtjs.org/api/configuration-generate
+  // нужно будет выбрать все id-шники из базы, в нашем случае id-шники вида "-LWvM2YOCxd1KNQXzFOz"
+  */
+  // generate: {
+  //   routes: [
+  //     "/posts/-LWvM2YOCxd1KNQXzFOz",
+  //     "/posts/-LWvMDH-cl39SM6-VllN",
+  //     "/posts/-LWzBFYW42_KfXWSf_fz"
+  //   ]
+  // },
+  // но, что если у нас очень много постов, не будем же мы вручную выбирать и устанавливать все роуты, для этого можно сделать функцию
+  // generate: {
+  //   routes: function () {
+  //     return axios.get("https://nuxt-blog-d5ca1.firebaseio.com/posts.json").then(res => {
+  //       const routes = [];
+  //       for (const key in res.data) {
+  //         routes.push("/posts/" + key);
+  //       }
+  //       return routes;
+  //     });
+  //   }
+  // },
+  // также можно передать нужные данные в payload, тогда нужно немного изменить код в posts/id
+  generate: {
+    routes: function () {
+      return axios.get("https://nuxt-blog-d5ca1.firebaseio.com/posts.json").then(res => {
+        const routes = [];
+        for (const key in res.data) {
+          routes.push({ route: "/posts/" + key, payload: { postData: res.data[key] } });
+        }
+        return routes;
+      });
+    }
+  },
 
   /*
   ** Build configuration
